@@ -1,24 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
+import { useState } from "react";
+import Canvas from './components/Canvas/Canvas';
+import LineList from './components/LinesList/LinesList';
+import Buttons from "./components/Buttons/Buttons";
+import { Lines, CanvasSize } from './types';
 import './App.css';
 
-function App() {
+const App = () => {
+  const [lines, setLines] = useState<Lines[]>([]);
+  const [canvasSize, setCanvasSize] = useState<CanvasSize>({ width: 900, height: 600 });
+
+  const handleSetLines = (newLine: Lines) => {
+    setLines([...lines, newLine])
+  }
+
+  const handleChangeCanvasSize = (size: CanvasSize) => {
+    setCanvasSize(size)
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Buttons onChangeCanvasSize={handleChangeCanvasSize} /> 
+      <Canvas onSetLines={handleSetLines} canvasSize={canvasSize} />  
+      {lines.length > 0 && <LineList lines={lines} />}
     </div>
   );
 }
